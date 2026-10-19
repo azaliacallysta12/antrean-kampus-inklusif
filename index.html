@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Antrean & Layanan Kampus Inklusif</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .high-contrast {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .high-contrast .card-bg {
+            background-color: #1a1a1a !important;
+            border: 2px solid #ffffff !important;
+            color: #ffffff !important;
+        }
+        .high-contrast button {
+            background-color: #ffff00 !important;
+            color: #000000 !important;
+            font-weight: bold !important;
+        }
+    </style>
+</head>
+<body id="app-body" class="bg-slate-100 text-slate-800 font-sans min-h-screen">
+
+    <!-- HEADER DENGAN FITUR AKSESIBILITAS WCAG -->
+    <header class="bg-blue-900 text-white p-4 shadow-md flex flex-wrap justify-between items-center gap-2">
+        <div>
+            <h1 class="text-lg font-bold">Layanan Antrean & Workspace Kampus</h1>
+            <p class="text-xs text-blue-200">Desain Berbasis User-Centered Design (UCD)</p>
+        </div>
+        
+        <!-- PANEL AKSESIBILITAS -->
+        <div class="flex items-center gap-2 bg-blue-800 p-2 rounded text-xs">
+            <span>Aksesibilitas:</span>
+            <button onclick="setFontSize('small')" class="px-2 py-1 bg-blue-700 hover:bg-blue-600 rounded">A-</button>
+            <button onclick="setFontSize('normal')" class="px-2 py-1 bg-blue-700 hover:bg-blue-600 rounded">A</button>
+            <button onclick="setFontSize('large')" class="px-2 py-1 bg-blue-700 hover:bg-blue-600 rounded">A+</button>
+            <button onclick="toggleContrast()" class="px-2 py-1 bg-amber-400 text-blue-950 font-bold rounded">Mode Kontras</button>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 space-y-4">
+
+        <!-- KARTU INFORMASI PENGGUNA (PERSONA) -->
+        <div class="card-bg bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex justify-between items-center text-xs">
+            <div>
+                <span class="text-slate-500">Pengguna:</span> <strong>Azalia Callysta</strong> (Mahasiswa)
+            </div>
+            <div class="text-emerald-700 bg-emerald-50 px-2 py-1 rounded font-semibold">
+                ✓ Bebas Dark Patterns
+            </div>
+        </div>
+
+        <!-- SIMULASI RESERVASI / ANTREAN SEHARI-HARI -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <!-- MODUL 1: CEK KETERISIAN TEMPAT (VISUALISASI DATA Sederhana) -->
+            <div class="card-bg bg-white p-5 rounded-lg shadow-sm border border-slate-200 space-y-3">
+                <h2 class="font-bold text-slate-900 text-sm border-b pb-2">Status Keterisian Ruang Belajar Hari Ini</h2>
+                
+                <div class="space-y-2 text-xs">
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span>Lantai 1 (Area Diskusi & Cafe)</span>
+                            <span class="font-bold text-amber-600">80% Terisi</span>
+                        </div>
+                        <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+                            <div class="bg-amber-500 h-full w-[80%]"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span>Lantai 2 (Ruang Hening & Quiet Zone)</span>
+                            <span class="font-bold text-emerald-600">35% Terisi</span>
+                        </div>
+                        <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+                            <div class="bg-emerald-500 h-full w-[35%]"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-[11px] text-slate-500 italic">*Grafik visual memudahkan pemahaman cepat tanpa membebani memori pengguna.</p>
+            </div>
+
+            <!-- MODUL 2: AMBIL ANTREAN / TIKET (UCD INTERACTION) -->
+            <div class="card-bg bg-white p-5 rounded-lg shadow-sm border border-slate-200 space-y-3">
+                <h2 class="font-bold text-slate-900 text-sm border-b pb-2">Ambil Tiket Antrean Layanan</h2>
+                
+                <div class="space-y-2 text-xs">
+                    <label class="block font-medium">Pilih Layanan Kampus:</label>
+                    <select id="serviceSelect" class="w-full p-2 border rounded bg-slate-50 text-slate-800">
+                        <option value="Cetak Dokumen & KTA">Layanan Cetak Dokumen / KTA</option>
+                        <option value="Konsultasi Akademik">Konsultasi / Bimbingan</option>
+                        <option value="Pinjam Ruang Diskusi">Reservasi Ruang Diskusi</option>
+                    </select>
+
+                    <button onclick="takeQueue()" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded transition">
+                        Ambil Nomor Antrean
+                    </button>
+                </div>
+
+                <!-- TAMPILAN TIKET ANTREAN -->
+                <div id="ticketResult" class="hidden p-3 bg-blue-50 border border-blue-200 rounded text-center space-y-1">
+                    <span class="text-[10px] text-blue-700 font-semibold uppercase">Nomor Antrean Anda</span>
+                    <div id="queueNumber" class="text-2xl font-extrabold text-blue-900">A-012</div>
+                    <p class="text-[11px] text-blue-800">Estimasi waktu tunggu: <strong>~5 Menit</strong></p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- EVALUASI KEGUNAAN (USABILITY CHECK) -->
+        <div class="card-bg bg-white p-4 rounded-lg shadow-sm border border-slate-200 text-xs space-y-2">
+            <h3 class="font-bold text-slate-900">Evaluasi Antarmuka (Aksesibilitas & UCD)</h3>
+            <ul class="list-disc list-inside text-slate-600 space-y-1">
+                <li><strong>Pengukuran Empiris:</strong> Tombol aksi utama berukuran besar agar mudah diklik di perangkat seluler.</li>
+                <li><strong>Aksesibilitas Visual:</strong> Kontras warna teks dan latar belakang memenuhi ambang batas WCAG.</li>
+            </ul>
+        </div>
+
+    </main>
+
+    <script>
+        let counter = 12;
+
+        function setFontSize(size) {
+            const body = document.getElementById('app-body');
+            if (size === 'small') body.style.fontSize = '14px';
+            if (size === 'normal') body.style.fontSize = '16px';
+            if (size === 'large') body.style.fontSize = '18px';
+        }
+
+        function toggleContrast() {
+            document.body.classList.toggle('high-contrast');
+        }
+
+        function takeQueue() {
+            counter++;
+            const ticketBox = document.getElementById('ticketResult');
+            const queueNum = document.getElementById('queueNumber');
+            
+            queueNum.innerText = "A-0" + counter;
+            ticketBox.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
